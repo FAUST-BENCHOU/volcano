@@ -49,46 +49,16 @@ func TestValidateHyperNode(t *testing.T) {
 			},
 			ExpectErr: false,
 		},
-		{
-			Name: "validate invalid hypernode with empty exactMatch",
-			HyperNode: hypernodev1alpha1.HyperNode{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: "hypernode-1",
-				},
-				Spec: hypernodev1alpha1.HyperNodeSpec{
-					Members: []hypernodev1alpha1.MemberSpec{
-						{
-							Type: hypernodev1alpha1.MemberTypeNode,
-							Selector: hypernodev1alpha1.MemberSelector{
-								ExactMatch: &hypernodev1alpha1.ExactMatch{Name: ""},
-							},
-						},
-					},
-				},
-			},
-			ExpectErr: true,
-		},
-		{
-			Name: "validate invalid hypernode with empty regexMatch",
-			HyperNode: hypernodev1alpha1.HyperNode{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: "hypernode-1",
-				},
-				Spec: hypernodev1alpha1.HyperNodeSpec{
-					Members: []hypernodev1alpha1.MemberSpec{
-						{
-							Type: hypernodev1alpha1.MemberTypeNode,
-							Selector: hypernodev1alpha1.MemberSelector{
-								RegexMatch: &hypernodev1alpha1.RegexMatch{
-									Pattern: "",
-								},
-							},
-						},
-					},
-				},
-			},
-			ExpectErr: true,
-		},
+		// Note: empty exactMatch name and empty regexMatch pattern validations are now enforced by CRD schema validation.
+		// These test cases are skipped as they are tested in e2e tests with actual CRD validation.
+		// {
+		// 	Name: "validate invalid hypernode with empty exactMatch",
+		// 	...
+		// },
+		// {
+		// 	Name: "validate invalid hypernode with empty regexMatch",
+		// 	...
+		// },
 		{
 			Name: "validate invalid hypernode with invalid regexMatch",
 			HyperNode: hypernodev1alpha1.HyperNode{
@@ -110,45 +80,16 @@ func TestValidateHyperNode(t *testing.T) {
 			},
 			ExpectErr: true,
 		},
-		{
-			Name: "validate invalid hypernode with both regexMatch and exactMatch",
-			HyperNode: hypernodev1alpha1.HyperNode{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: "hypernode-1",
-				},
-				Spec: hypernodev1alpha1.HyperNodeSpec{
-					Members: []hypernodev1alpha1.MemberSpec{
-						{
-							Type: hypernodev1alpha1.MemberTypeNode,
-							Selector: hypernodev1alpha1.MemberSelector{
-								RegexMatch: &hypernodev1alpha1.RegexMatch{
-									Pattern: "node.*",
-								},
-								ExactMatch: &hypernodev1alpha1.ExactMatch{Name: "node-1"},
-							},
-						},
-					},
-				},
-			},
-			ExpectErr: true,
-		},
-		{
-			Name: "validate invalid hypernode with neither regexMatch nor exactMatch",
-			HyperNode: hypernodev1alpha1.HyperNode{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: "hypernode-1",
-				},
-				Spec: hypernodev1alpha1.HyperNodeSpec{
-					Members: []hypernodev1alpha1.MemberSpec{
-						{
-							Type:     hypernodev1alpha1.MemberTypeNode,
-							Selector: hypernodev1alpha1.MemberSelector{},
-						},
-					},
-				},
-			},
-			ExpectErr: true,
-		},
+		// Note: mutual exclusivity and selector presence validations are now enforced by CRD schema validation (XValidation).
+		// These test cases are skipped as they are tested in e2e tests with actual CRD validation.
+		// {
+		// 	Name: "validate invalid hypernode with both regexMatch and exactMatch",
+		// 	...
+		// },
+		// {
+		// 	Name: "validate invalid hypernode with neither regexMatch nor exactMatch",
+		// 	...
+		// },
 		{
 			Name: "validate none members",
 			HyperNode: hypernodev1alpha1.HyperNode{
@@ -182,30 +123,12 @@ func TestValidateHyperNode(t *testing.T) {
 			},
 			ExpectErr: false,
 		},
-		{
-			Name: "validate invalid hypernode with labelMatch and exactMatch",
-			HyperNode: hypernodev1alpha1.HyperNode{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: "hypernode-multiple-selectors",
-				},
-				Spec: hypernodev1alpha1.HyperNodeSpec{
-					Members: []hypernodev1alpha1.MemberSpec{
-						{
-							Type: hypernodev1alpha1.MemberTypeNode,
-							Selector: hypernodev1alpha1.MemberSelector{
-								LabelMatch: &metav1.LabelSelector{
-									MatchLabels: map[string]string{
-										"topology-rack": "rack1",
-									},
-								},
-								ExactMatch: &hypernodev1alpha1.ExactMatch{Name: "node-1"},
-							},
-						},
-					},
-				},
-			},
-			ExpectErr: true,
-		},
+		// Note: mutual exclusivity validation (labelMatch and exactMatch) is now enforced by CRD schema validation (XValidation).
+		// This test case is skipped as it is tested in e2e tests with actual CRD validation.
+		// {
+		// 	Name: "validate invalid hypernode with labelMatch and exactMatch",
+		// 	...
+		// },
 	}
 
 	for _, testCase := range testCases {
