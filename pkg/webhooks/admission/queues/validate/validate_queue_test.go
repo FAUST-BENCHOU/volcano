@@ -87,22 +87,23 @@ func TestAdmitQueues(t *testing.T) {
 		t.Errorf("Marshal queue with closed state failed for %v.", err)
 	}
 
-	wrongState := schedulingv1beta1.Queue{
-		ObjectMeta: metav1.ObjectMeta{
-			Name: "abnormal-case",
-		},
-		Spec: schedulingv1beta1.QueueSpec{
-			Weight: 1,
-		},
-		Status: schedulingv1beta1.QueueStatus{
-			State: "wrong",
-		},
-	}
-
-	wrongStateJSON, err := json.Marshal(wrongState)
-	if err != nil {
-		t.Errorf("Marshal queue with wrong state failed for %v.", err)
-	}
+	// Note: wrongState validation is now enforced by CRD schema validation (ValidatingAdmissionPolicy).
+	// wrongState := schedulingv1beta1.Queue{
+	// 	ObjectMeta: metav1.ObjectMeta{
+	// 		Name: "abnormal-case",
+	// 	},
+	// 	Spec: schedulingv1beta1.QueueSpec{
+	// 		Weight: 1,
+	// 	},
+	// 	Status: schedulingv1beta1.QueueStatus{
+	// 		State: "wrong",
+	// 	},
+	// }
+	//
+	// wrongStateJSON, err := json.Marshal(wrongState)
+	// if err != nil {
+	// 	t.Errorf("Marshal queue with wrong state failed for %v.", err)
+	// }
 
 	openStateForDelete := schedulingv1beta1.Queue{
 		ObjectMeta: metav1.ObjectMeta{
@@ -138,32 +139,35 @@ func TestAdmitQueues(t *testing.T) {
 		t.Errorf("Marshal queue for delete with closed state failed for %v.", err)
 	}
 
-	weightNotSet := schedulingv1beta1.Queue{
-		ObjectMeta: metav1.ObjectMeta{
-			Name: "weight-not-set",
-		},
-		Spec: schedulingv1beta1.QueueSpec{},
-	}
+	// Note: weight validation is now enforced by CRD schema validation (ValidatingAdmissionPolicy).
+	// weightNotSet := schedulingv1beta1.Queue{
+	// 	ObjectMeta: metav1.ObjectMeta{
+	// 		Name: "weight-not-set",
+	// 	},
+	// 	Spec: schedulingv1beta1.QueueSpec{},
+	// }
+	//
+	// weightNotSetJSON, err := json.Marshal(weightNotSet)
+	// if err != nil {
+	// 	t.Errorf("Marshal queue with no weight failed for %v.", err)
+	// }
 
-	weightNotSetJSON, err := json.Marshal(weightNotSet)
-	if err != nil {
-		t.Errorf("Marshal queue with no weight failed for %v.", err)
-	}
+	// Note: weight validation is now enforced by CRD schema validation (ValidatingAdmissionPolicy).
+	// negativeWeight := schedulingv1beta1.Queue{
+	// 	ObjectMeta: metav1.ObjectMeta{
+	// 		Name: "negative-weight",
+	// 	},
+	// 	Spec: schedulingv1beta1.QueueSpec{
+	// 		Weight: -1,
+	// 	},
+	// }
+	//
+	// negativeWeightJSON, err := json.Marshal(negativeWeight)
+	// if err != nil {
+	// 	t.Errorf("Marshal queue with negative weight failed for %v.", err)
+	// }
 
-	negativeWeight := schedulingv1beta1.Queue{
-		ObjectMeta: metav1.ObjectMeta{
-			Name: "negative-weight",
-		},
-		Spec: schedulingv1beta1.QueueSpec{
-			Weight: -1,
-		},
-	}
-
-	negativeWeightJSON, err := json.Marshal(negativeWeight)
-	if err != nil {
-		t.Errorf("Marshal queue with negative weight failed for %v.", err)
-	}
-
+	// Note: positiveWeightForUpdate is still used in test setup, so we keep it.
 	positiveWeightForUpdate := schedulingv1beta1.Queue{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "positive-weight-for-update",
@@ -172,25 +176,25 @@ func TestAdmitQueues(t *testing.T) {
 			Weight: 1,
 		},
 	}
-	positiveWeightForUpdateJSON, err := json.Marshal(positiveWeightForUpdate)
-	if err != nil {
-		t.Errorf("Marshal queue with positive weight failed for %v.", err)
-	}
-
-	negativeWeightForUpdate := schedulingv1beta1.Queue{
-		ObjectMeta: metav1.ObjectMeta{
-			Name: "positive-weight-for-update",
-		},
-		Spec: schedulingv1beta1.QueueSpec{
-			Weight: -1,
-		},
-	}
-
-	negativeWeightForUpdateJSON, err := json.Marshal(negativeWeightForUpdate)
-	if err != nil {
-		t.Errorf("Marshal queue with negative weight failed for %v.", err)
-
-	}
+	// positiveWeightForUpdateJSON is not used anymore (test case commented out)
+	// positiveWeightForUpdateJSON, err := json.Marshal(positiveWeightForUpdate)
+	// if err != nil {
+	// 	t.Errorf("Marshal queue with positive weight failed for %v.", err)
+	// }
+	//
+	// negativeWeightForUpdate := schedulingv1beta1.Queue{
+	// 	ObjectMeta: metav1.ObjectMeta{
+	// 		Name: "positive-weight-for-update",
+	// 	},
+	// 	Spec: schedulingv1beta1.QueueSpec{
+	// 		Weight: -1,
+	// 	},
+	// }
+	//
+	// negativeWeightForUpdateJSON, err := json.Marshal(negativeWeightForUpdate)
+	// if err != nil {
+	// 	t.Errorf("Marshal queue with negative weight failed for %v.", err)
+	// }
 
 	resourceNotSet := schedulingv1beta1.Queue{
 		ObjectMeta: metav1.ObjectMeta{

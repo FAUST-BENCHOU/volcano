@@ -35,9 +35,9 @@ import (
 )
 
 func TestValidateJobCreate(t *testing.T) {
-	var invTTL int32 = -1
+	// var invTTL int32 = -1  // Used in commented-out test cases (now enforced by CRD schema validation)
 	var policyExitCode int32 = -1
-	var invMinAvailable int32 = -1
+	// var invMinAvailable int32 = -1  // Used in commented-out test cases (now enforced by CRD schema validation)
 	namespace := "test"
 	privileged := true
 
